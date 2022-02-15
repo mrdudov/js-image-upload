@@ -1,6 +1,15 @@
-import { DefaultDeserializer } from "v8"
+function bytesToSize(bytes) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    if (!bytes) {
+        return '0 Byte'
+    }
+
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
+ }
 
 export function upload(selector, options = {}) {
+    let files = []
     const input = document.querySelector(selector)
     const preview = document.createElement('div')
 
@@ -28,7 +37,7 @@ export function upload(selector, options = {}) {
             return
         }
 
-        const files = Array.from(event.target.files)
+        files = Array.from(event.target.files)
         
         preview.innerHTML = ''
 
@@ -43,7 +52,12 @@ export function upload(selector, options = {}) {
                 const src = ev.target.result
                 preview.insertAdjacentHTML('afterbegin', `
                 <div class="preview-image">
+                    <div class="preview-remove" data-name="${file.name}">&times;</div>
                     <img src="${src}" alt="${file.name}" />
+                    <div class="preview-info">
+                        <span>${file.name}</span>
+                        ${bytesToSize(file.size)}
+                    </div>
                 </div>
                 `)
             }
@@ -52,7 +66,23 @@ export function upload(selector, options = {}) {
         })
     }
 
+    const removeHandler = event => {
+        if (!event.target.dataset.name) {
+            return
+        }
+
+        const {name} = event.target.dataset
+        files = files.filter(file => file.name !== name)
+
+        const block = preview
+            .querySelector(`[data-name="${name}"]`)
+            .closest('.preview-image')
+        block.classList.add('removing')
+        setTimeout(() => block.remove(), 300)
+        
+    }
 
     open.addEventListener('click', triggerInput)
     input.addEventListener('change', changeHandler)
+    preview.addEventListener('click', removeHandler)
 }
