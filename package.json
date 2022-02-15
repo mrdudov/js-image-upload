@@ -1,0 +1,22 @@
+{
+  "name": "js-image-upload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "serve": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrdudov/js-image-upload.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrdudov/js-image-upload/issues"
+  },
+  "homepage": "https://github.com/mrdudov/js-image-upload#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}
