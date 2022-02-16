@@ -1,1 +1,1 @@
-# Js image upload
+# js image upload
