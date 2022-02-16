@@ -117,3 +117,4 @@ function bytesToSize(bytes) {
     preview.addEventListener('click', removeHandler)
     upload.addEventListener('click', uploadHandler)
   }
+  

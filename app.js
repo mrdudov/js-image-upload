@@ -1,14 +1,8 @@
-import firebase from 'firebase/app'
 import 'firebase/storage'
 import {upload} from './upload.js'
 import 'firebase/database'
-
-
-
 import { initializeApp } from 'firebase/app'
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
-
-
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
 const firebaseConfig = {
@@ -39,9 +33,11 @@ upload('#file', {
       }, error => {
         console.log(error)
       }, () => {
-        task.snapshot.storageRef.getDownloadURL().then(url => {
-          console.log('Download URL', url)
-        })
+
+        getDownloadURL(task.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+        });
+            
       })
     })
   }
