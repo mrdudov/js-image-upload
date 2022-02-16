@@ -1,10 +1,8 @@
-import {element} from './tools'
+import {element, filePreviewRender} from './tools'
 
-export function upload(selector) {
+export function upload(selector, options = {}) {
 
   let files = []
-  
-  
 
   const input = document.querySelector(selector)
   const open = element('button', ['btn'], 'open')
@@ -12,14 +10,21 @@ export function upload(selector) {
   const preview = element('div', ['preview'])
   upload.style.display = 'none'
 
+  if (options.multiple) {
+    input.setAttribute('multiple', true)
+  }
+
+  if (options.accept && Array.isArray(options.accept)) {
+    input.setAttribute('accept', options.accept.join(','))
+  }
+
   input.insertAdjacentElement('afterend', preview)
   input.insertAdjacentElement('afterend', upload)
   input.insertAdjacentElement('afterend', open)
 
   open.addEventListener('click', () => input.click())
 
-
-  const inputChangeHandler= event => {
+  const inputChangeHandler = event => {
     
     if (!event.target.files) {
       return
@@ -37,7 +42,7 @@ export function upload(selector) {
 
       reader.onload = ev => {
         const src = ev.target.result
-        preview.insertAdjacentHTML('afterbegin', `<img src="${src}" />`)
+        preview.insertAdjacentHTML('afterbegin', filePreviewRender(file, src))
       }
 
       reader.readAsDataURL(file)

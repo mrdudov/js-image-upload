@@ -1,3 +1,6 @@
 import {upload} from './upload.js'
 
-upload('#file')
+upload('#file', {
+  accept: ['.png', '.jpg', '.jpeg', '.gif'],
+  multiple: true
+})
